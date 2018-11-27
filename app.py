@@ -2,12 +2,12 @@
 import sys
 from flask import Flask, render_template,jsonify,request
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.ext.automap import automap_base
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
-import numpy as np
-import pandas as pd
+# from flask_sqlalchemy import SQLAlchemy
+# from sqlalchemy.ext.automap import automap_base
+# from sqlalchemy import create_engine
+# from sqlalchemy.orm import Session
+# import numpy as np
+# import pandas as pd
 
 app = Flask(__name__)
 CORS(app)
