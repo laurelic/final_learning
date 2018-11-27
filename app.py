@@ -12,16 +12,16 @@ import pandas as pd
 app = Flask(__name__)
 CORS(app)
 
-app.config['STATIC_FOLDER'] = 'static'
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database/inpatient.db"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+# app.config['STATIC_FOLDER'] = 'static'
+# app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database/inpatient.db"
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# db = SQLAlchemy(app)
 
-Base = automap_base(metadata=db.metadata)
-engine = db.get_engine()
-Base.prepare(engine, reflect=True)
-Inpatient = Base.classes.inpatient
-Drg = Base.classes.drg
+# Base = automap_base(metadata=db.metadata)
+# engine = db.get_engine()
+# Base.prepare(engine, reflect=True)
+# Inpatient = Base.classes.inpatient
+# Drg = Base.classes.drg
 
 
 #@app.route("/map")
@@ -44,7 +44,7 @@ def predict():
 @app.route("/data")
 def data():
     """Display the data table"""
-    res = db.session.query(Inpatient).all()
+    #res = db.session.query(Inpatient).all()
     return render_template("data.html")
 
 	
