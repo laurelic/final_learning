@@ -1,0 +1,27 @@
+body {
+    background-color: #f7f7f8;
+
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9;
+}
+
+.intro-page {
+    background-image: url("../images/rawpixel-600792-unsplash.jpg");
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    min-height: auto;
+    text-align: left;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    background-position: center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    padding: 170px 15px;
+}
