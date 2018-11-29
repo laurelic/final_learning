@@ -17,5 +17,6 @@ var table = new Tabulator("#inpatient-table", {
 });
 
 d3.json("/inpatient_data", function(data) {
+    console.log(data)
     table.setData(data);
 });
