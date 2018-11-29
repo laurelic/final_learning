@@ -51,6 +51,18 @@ def inpatient_data():
         d_list.append(rec)
     return jsonify(d_list)
 
+@app.route("/drg190")
+def drg190():
+    r""" Returns a json of the inpatient data"""
+
+    response = db.session.query(Inpatient).filter_by(drg_definition = '190 - CHRONIC OBSTRUCTIVE PULMONARY DISEASE W MCC')
+    d_list = []
+    for r in response:
+        rec = r.__dict__.copy()
+        del rec['_sa_instance_state']
+        d_list.append(rec)
+    return jsonify(d_list)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
