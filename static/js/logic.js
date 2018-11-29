@@ -1,5 +1,6 @@
 // // Store our API endpoint inside queryUrl
-var pUrl = "https://raw.githubusercontent.com/jgoodall/us-maps/master/geojson/hrr.geo.json"
+
+var pUrl = "./hrr_region.geo.json"
 
 //Create a greyscale view layer
 var lightLayer = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibGF1cmVsaWMiLCJhIjoiY2pteG9icGYyM3ZvaTNxbnk2a2F6MDZmciJ9.ZQhdib9of9UJDKThb3b1QA", {
@@ -10,8 +11,6 @@ var lightLayer = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.p
 
 //initialize the faultlines layer
 var hrrLines = new L.layerGroup();
-
-
 
 //initialize base maps
 var baseMaps = {
