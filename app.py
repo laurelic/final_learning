@@ -2,7 +2,6 @@ import sys
 from flask import Flask, render_template,jsonify,request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-from flask_jsglue import JSGlue
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
@@ -11,7 +10,6 @@ import pandas as pd
 
 app = Flask(__name__)
 CORS(app)
-jsglue = JSGlue(app)
 
 #app.config['STATIC_FOLDER'] = 'static'
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///db/inpatient.db"

@@ -1,5 +1,5 @@
 // // Store our API endpoint inside queryUrl
-var pUrl = Flask.url_for("static", {"filename": "js/hrr_regions.json"})
+var pUrl = "https://raw.githubusercontent.com/jgoodall/us-maps/master/geojson/hrr.geo.json"
 
 //Create a greyscale view layer
 var lightLayer = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibGF1cmVsaWMiLCJhIjoiY2pteG9icGYyM3ZvaTNxbnk2a2F6MDZmciJ9.ZQhdib9of9UJDKThb3b1QA", {
