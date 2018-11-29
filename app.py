@@ -51,8 +51,8 @@ def inpatient_data():
         d_list.append(rec)
     return jsonify(d_list)
 
-@app.route("/drg190")
-def drg190():
+@app.route("/drg119")
+def drg119():
     r""" Returns a json of the inpatient data"""
 
     response = db.session.query(Inpatient).filter_by(drg_definition = '190 - CHRONIC OBSTRUCTIVE PULMONARY DISEASE W MCC')
@@ -63,6 +63,113 @@ def drg190():
         d_list.append(rec)
     return jsonify(d_list)
 
+@app.route("/drg122")
+def drg122():
+    r""" Returns a json of the inpatient data"""
+
+    response = db.session.query(Inpatient).filter_by(drg_definition = '193 - SIMPLE PNEUMONIA & PLEURISY W MCC')
+    d_list = []
+    for r in response:
+        rec = r.__dict__.copy()
+        del rec['_sa_instance_state']
+        d_list.append(rec)
+    return jsonify(d_list)
+
+@app.route("/drg123")
+def drg123():
+    r""" Returns a json of the inpatient data"""
+
+    response = db.session.query(Inpatient).filter_by(drg_definition = '194 - SIMPLE PNEUMONIA & PLEURISY W CC')
+    d_list = []
+    for r in response:
+        rec = r.__dict__.copy()
+        del rec['_sa_instance_state']
+        d_list.append(rec)
+    return jsonify(d_list)
+
+@app.route("/drg193")
+def drg193():
+    r""" Returns a json of the inpatient data"""
+
+    response = db.session.query(Inpatient).filter_by(drg_definition = '291 - HEART FAILURE & SHOCK W MCC')
+    d_list = []
+    for r in response:
+        rec = r.__dict__.copy()
+        del rec['_sa_instance_state']
+        d_list.append(rec)
+    return jsonify(d_list)
+
+@app.route("/drg194")
+def drg194():
+    r""" Returns a json of the inpatient data"""
+
+    response = db.session.query(Inpatient).filter_by(drg_definition = '292 - HEART FAILURE & SHOCK W CC')
+    d_list = []
+    for r in response:
+        rec = r.__dict__.copy()
+        del rec['_sa_instance_state']
+        d_list.append(rec)
+    return jsonify(d_list)
+
+@app.route("/drg261")
+def drg261():
+    r""" Returns a json of the inpatient data"""
+
+    response = db.session.query(Inpatient).filter_by(drg_definition = '392 - ESOPHAGITIS, GASTROENT & MISC DIGEST DISORDERS W/O MCC')
+    d_list = []
+    for r in response:
+        rec = r.__dict__.copy()
+        del rec['_sa_instance_state']
+        d_list.append(rec)
+    return jsonify(d_list)
+
+@app.route("/drg310")
+def drg310():
+    r""" Returns a json of the inpatient data"""
+
+    response = db.session.query(Inpatient).filter_by(drg_definition = '470 - MAJOR JOINT REPLACEMENT OR REATTACHMENT OF LOWER EXTREMITY W/O MCC')
+    d_list = []
+    for r in response:
+        rec = r.__dict__.copy()
+        del rec['_sa_instance_state']
+        d_list.append(rec)
+    return jsonify(d_list)
+
+@app.route("/drg440")
+def drg440():
+    r""" Returns a json of the inpatient data"""
+
+    response = db.session.query(Inpatient).filter_by(drg_definition = '690 - KIDNEY & URINARY TRACT INFECTIONS W/O MCC')
+    d_list = []
+    for r in response:
+        rec = r.__dict__.copy()
+        del rec['_sa_instance_state']
+        d_list.append(rec)
+    return jsonify(d_list)
+
+@app.route("/drg517")
+def drg517():
+    r""" Returns a json of the inpatient data"""
+
+    response = db.session.query(Inpatient).filter_by(drg_definition = '871 - SEPTICEMIA OR SEVERE SEPSIS W/O MV >96 HOURS W MCC')
+    d_list = []
+    for r in response:
+        rec = r.__dict__.copy()
+        del rec['_sa_instance_state']
+        d_list.append(rec)
+    return jsonify(d_list)
+
+@app.route("/drg518")
+def drg518():
+    r""" Returns a json of the inpatient data"""
+
+    response = db.session.query(Inpatient).filter_by(drg_definition = '872 - SEPTICEMIA OR SEVERE SEPSIS W/O MV >96 HOURS W/O MCC')
+    d_list = []
+    for r in response:
+        rec = r.__dict__.copy()
+        del rec['_sa_instance_state']
+        d_list.append(rec)
+    return jsonify(d_list)
 
 if __name__ == "__main__":
     app.run(debug=True)
