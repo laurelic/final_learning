@@ -67,7 +67,7 @@ def drg119():
 def drg122():
     r""" Returns a json of the inpatient data"""
 
-    response = db.session.query(Inpatient).filter_by(drg_definition = '193 - SIMPLE PNEUMONIA & PLEURISY W MCC')
+    response = db.session.query(Inpatient).filter_by(drg_definition ='193 - SIMPLE PNEUMONIA & PLEURISY W MCC' )
     d_list = []
     for r in response:
         rec = r.__dict__.copy()
