@@ -24,3 +24,7 @@ $("#tabulator-controls button[name=download").on("click", function(){
 d3.json("/inpatient_data", function(data) {
     table.setData(data);
 });
+
+// function fadeout() {
+//     document.getElementById("loader").fadeou;
+// }
