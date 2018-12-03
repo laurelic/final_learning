@@ -1,5 +1,52 @@
 {% extends "layout.html" %}
 
 {% block content %}
+<div id="data-body">
+	<br><br><br>
+	<div class="container">
+		<form id="form1", action="/predict" method = "POST">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="well">
+					<h5>Select a diagnoise code:</h5>
+					<select id="selDrgDataset" name="drgSel" onchange="drgOptionChanged(this.value)"></select>
+					</div>
+				</div>		
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="well">
+					<h5>Select a Hospital Referral Region:</h5>
+					<select id="selHrrDataset" name="hrrSel" onchange="hrrOptionChanged(this.value)"></select>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="well">
+					<h5>Select a Provider:</h5>
+					<select id="selProviderDataset" name="providerSel" onchange="providerOptionChanged(this.value)"></select>
+					</div>
+				</div>
+			</div>
+			<hr>			
+			<div class="row">
+				<div class="col-md-2">
+					<input id="submit" type="submit" value="Predict"> <br><br>
+				</div>
+			</div>
+		</form
+		<p>Result</P>
+			<div id="result">
+				<h5>
+				{% if Ypredict %}
+					The predicted cost for {{ drg_definition }} at {{ provider_name }} in {{ hrr_description }} is: {{'$%0.2f'|format( Ypredict |float) }}
+				{% endif %}
+				</h5>
+			</div>
+	</div>
+<div>
 
 {% endblock %}
