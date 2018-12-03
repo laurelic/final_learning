@@ -7,6 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 import numpy as np
 import pandas as pd
+from sklearn.externals import joblib
 
 app = Flask(__name__)
 CORS(app)
@@ -20,6 +21,9 @@ engine = db.get_engine()
 Base.prepare(engine, reflect=True)
 Inpatient = Base.classes.inpatient
 Drg = Base.classes.drg
+Hrr = Base.classes.hrr
+Provider = Base.classes.provider
+
 
 @app.route("/")
 def index():
@@ -30,9 +34,49 @@ def index():
 def explore():
     return render_template("explore.html")
 
-@app.route("/predict")
+@app.route("/predict", methods=['POST', 'GET'])
 def predict():
-    return render_template("predict.html")
+	if request.method == 'GET':
+		print('GET GET GET')
+		return render_template('predict.html')
+	if request.method == 'POST':
+		print('POST POST POST')
+		selecteddrg = request.form.get("drgSel", None)
+		print (selecteddrg)
+		selectedhrr = request.form.get("hrrSel", None)
+		print(selectedhrr)	
+		drg = selecteddrg.split("|")
+		print(drg)
+		
+		hrr = selectedhrr.split("|")
+		print(hrr)
+		
+		selectedprovider = request.form.get("providerSel", None)
+		print(selectedprovider)	
+		provider = selectedprovider.split("|")
+		
+		X_test = []
+		X_test.append(drg[0])
+		X_test.append(provider[0])
+		X_test.append(hrr[0])
+		X_test.append(drg[1])
+		X_test.append(drg[2])
+		X_test.append(drg[3])
+		
+		X_test_df = pd.DataFrame(np.array(X_test).reshape(1, 6))
+		print(X_test_df.head())
+		print (X_test)
+		
+		drg_definition = drg[4]
+		hrr_description = hrr[1]
+		provider_name = provider[1]
+		joblib_model = joblib.load('LinearRegression_model2.pkl')		
+		#joblib_model = joblib.load('LinearRegression_model.pkl')
+		Ypredict = joblib_model.predict(X_test_df)
+		print(Ypredict)
+			
+		return render_template("predict.html", drg_definition=drg_definition, provider_name=provider_name, hrr_description=hrr_description, Ypredict=Ypredict)
+
 
 @app.route("/question")
 def question():
@@ -55,6 +99,69 @@ def inpatient_data():
         d_list.append(rec)
     return jsonify(d_list)
 
+@app.route("/hrr_all")
+def allhrr_data():
+    r""" Returns a json of the hrr data"""
+
+    response = db.session.query(Hrr).all()
+    d_list = []
+    for r in response:
+        rec = r.__dict__.copy()
+        del rec['_sa_instance_state']
+        d_list.append(rec)
+    return jsonify(d_list)	
+
+@app.route("/hrr/<drg>")
+def hrrwithdrg_data(drg):
+    r""" Returns a json of the hrr data"""
+    print("hrrwithdrg_data:") 
+    #response = db.session.query(Inpatient).filter_by(drg_definition = drg)
+    response = db.session.query.join(Inpatient, Hrr.hrr_description==Inpatient.hrr_description).filter_by(drg_definition = drg).distinct(Hrr.hrr_description)
+	
+	#userList = users.query.join(friendships, users.id==friendships.user_id).add_columns(users.userId, users.name, users.email, friends.userId, friendId).filter(users.id == friendships.friend_id).filter(frien
+				
+    d_list = []
+    for r in response:
+        rec = r.__dict__.copy()
+        del rec['_sa_instance_state']
+        d_list.append(rec)
+    return jsonify(d_list)	
+@app.route("/drg_all")
+def alldrg_data():
+    r""" Returns a json of the drg data"""
+
+    response = db.session.query(Drg).all()
+    d_list = []
+    for r in response:
+        rec = r.__dict__.copy()
+        del rec['_sa_instance_state']
+        d_list.append(rec)
+    return jsonify(d_list)
+	
+@app.route("/provider_all")
+def allprovider_data():
+    r""" Returns a json of the inpatient data"""
+
+    response = db.session.query(Provider).all()
+    d_list = []
+    for r in response:
+        rec = r.__dict__.copy()
+        del rec['_sa_instance_state']
+        d_list.append(rec)
+    return jsonify(d_list)
+
+@app.route("/provider/<hrr>")
+def providerinhrr_data(hrr):
+    r""" Returns a json of the inpatient data"""
+    print("providerinhrr_data:") 
+    response = db.session.query(Provider).filter_by(hrr_description = hrr)
+    d_list = []
+    for r in response:
+        rec = r.__dict__.copy()
+        del rec['_sa_instance_state']
+        d_list.append(rec)
+    return jsonify(d_list)
+	
 @app.route("/drg119")
 def drg119():
     r""" Returns a json of the inpatient data"""
