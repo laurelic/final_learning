@@ -101,10 +101,24 @@ def inpatient_data():
         del rec['_sa_instance_state']
         d_list.append(rec)
     return jsonify(d_list)
+	
+	
+@app.route("/drg_all")
+def alldrg_data():
+    r""" Returns a json of all drg data - this is used on predict page load """
 
+    response = db.session.query(Drg).all()
+    d_list = []
+    for r in response:
+        rec = r.__dict__.copy()
+        del rec['_sa_instance_state']
+        d_list.append(rec)
+    return jsonify(d_list)
+	
+	
 @app.route("/hrr_all")
 def allhrr_data():
-    r""" Returns a json of the hrr data"""
+    r""" Returns a json of all hrr data - this is used on Predict page load"""
 
     response = db.session.query(Hrr).all()
     d_list = []
@@ -114,9 +128,12 @@ def allhrr_data():
         d_list.append(rec)
     return jsonify(d_list)	
 
+	
 @app.route("/hrr/<drg>")
 def hrrwithdrg_data(drg):
-    r""" Returns a json of the hrr data"""
+    r""" Returns a json of hrr that has performed the selected drg data - """
+    r""" this is used to refresh hrr dropdown once a drg is selected"""
+	
     print("hrrwithdrg_data:")
     print(drg)
     sql = text ('select distinct i.hrr_description, h.hrr_id \
@@ -129,8 +146,7 @@ def hrrwithdrg_data(drg):
     print (sql)
     response = db.engine.execute(sql, {'drg': drg}).fetchall()
     #print (response)
- 	
-	
+ 		
     hrr_list = []
     for r in response:
         d_dictionary = {}
@@ -138,22 +154,11 @@ def hrrwithdrg_data(drg):
         d_dictionary['hrr_id'] = r[1]
         hrr_list.append(d_dictionary)
     return jsonify(hrr_list)	
-	
-@app.route("/drg_all")
-def alldrg_data():
-    r""" Returns a json of the drg data"""
 
-    response = db.session.query(Drg).all()
-    d_list = []
-    for r in response:
-        rec = r.__dict__.copy()
-        del rec['_sa_instance_state']
-        d_list.append(rec)
-    return jsonify(d_list)
 	
 @app.route("/provider_all")
 def allprovider_data():
-    r""" Returns a json of the inpatient data"""
+    r""" Returns a json of all provider data - this is used on predict page load"""
 
     response = db.session.query(Provider).all()
     d_list = []
@@ -163,22 +168,12 @@ def allprovider_data():
         d_list.append(rec)
     return jsonify(d_list)
 
-@app.route("/provider/<hrr>")
-def providerinhrr_data(hrr):
-    r""" Returns a json of the inpatient data"""
-    print("providerinhrr_data:") 
-    response = db.session.query(Provider).filter_by(hrr_description = hrr)
-    d_list = []
-    for r in response:
-        rec = r.__dict__.copy()
-        del rec['_sa_instance_state']
-        d_list.append(rec)
-    return jsonify(d_list)
 
 @app.route("/hrrprovider/<drghrr>")
 def providerindrghrr_data(drghrr):
-    r""" Returns a json of the inpatient data"""
-
+    r""" Returns a json of providers who's in the selected hrr and have performed the selected procdures data"""
+    r""" this is used to refresh provider dropdown once selections were made on both drg and hrr dropdown boxes """
+	
     print("provider with in region that had perform the procedure:")
     print(drghrr)
     drg_hrr = drghrr.split("|")

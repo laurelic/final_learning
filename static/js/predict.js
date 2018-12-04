@@ -1,9 +1,11 @@
+// add the first entry of all dropdown
 function selectOne(selector){
 	selector
 		.append("option")
 		.text("Select One");
 }
 
+// initial load of drg dropdown
 d3.json("/drg_all").then(function(data) {
 	var selector = d3.select("#selDrgDataset");
 	console.log(data);
@@ -17,7 +19,7 @@ d3.json("/drg_all").then(function(data) {
 	const firstSample = data[0];
 });
 
-
+// initial load of hrr dropdown
 d3.json("/hrr_all").then(function(data) {
 	var selector = d3.select("#selHrrDataset");
 	console.log(data);
@@ -31,7 +33,7 @@ d3.json("/hrr_all").then(function(data) {
 	const firstSample = data[0];
 }); 
 
-
+// initial load of provider dropdown
 d3.json("/provider_all").then(function(data) {
 	var selector = d3.select("#selProviderDataset");
 	selectOne(selector);
@@ -45,6 +47,9 @@ d3.json("/provider_all").then(function(data) {
 
 }); 
 
+
+// relod hrr dropdown content, based on the selected drg
+// only populated with hrr that has had the selected drg
 function hrrReload( drg_definition ){
 	console.log("reload Hrr function: " + drg_definition);
 	// clear existing options before reload
@@ -69,33 +74,7 @@ function hrrReload( drg_definition ){
 };
 
 
-// load providers with in the selected hrr  
-function providerReload( hrr_description ){
-	console.log("reload provider function: " + hrr_description);
-
-	// clear existing options before reload
-	document.getElementById("selProviderDataset").options.length = 0;
-	
-	var drg_hrr = drg_definition + '|' + hrr_description
-	var path = "/provider/" + hrr_description;
-	//var path = "/provider/" + drg_hrr;
-	
-	d3.json(path).then(function(data) {
-		console.log("json call");
-		var selector = d3.select("#selProviderDataset");
-		selectOne(selector);
-		data.forEach(function(d) {
-			selector
-				.append("option")
-				.text(d['provider_name'])
-				.property("value", d['provider_rowid'] + '|' + d['provider_name']);
-		});
-		const firstSample = data[0];
-
-	})
-};
-
-// load providers with in the selected hrr  
+// load providers with in the selected drg/hrr  
 function providerHrrReload( drg_definition, hrr_description ){
 	console.log("reload providerHrrReload function: " + drg_definition + ' ' + hrr_description);
 
@@ -103,7 +82,6 @@ function providerHrrReload( drg_definition, hrr_description ){
 	document.getElementById("selProviderDataset").options.length = 0;
 	
 	var drg_hrr = drg_definition + '|' + hrr_description
-	//var path = "/provider/" + hrr_description;
 	var path = "/hrrprovider/" + drg_hrr;
 	console.log (path);
 	
@@ -141,7 +119,7 @@ function hrrOptionChanged(newSample) {
 	console.log('hrr_description: ' + hrr_arr[1]);
 	var hrr_description = hrr_arr[1];
 	var drg_definition = hrr_arr[2];
-	// providerReload( hrr_description );
+	//load providers with in the selected drg/hrr  
 	providerHrrReload (drg_definition, hrr_description);
 	console.log("reload provider");
 };
