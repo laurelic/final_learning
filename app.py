@@ -8,6 +8,8 @@ from sqlalchemy.orm import Session
 import numpy as np
 import pandas as pd
 from sklearn.externals import joblib
+from sqlalchemy import text
+
 
 app = Flask(__name__)
 CORS(app)
@@ -73,6 +75,7 @@ def predict():
 		joblib_model = joblib.load('LinearRegression_model2.pkl')		
 		#joblib_model = joblib.load('LinearRegression_model.pkl')
 		Ypredict = joblib_model.predict(X_test_df)
+		Ypredict = "${0:,.2f}".format(Ypredict[0][0])
 		print(Ypredict)
 			
 		return render_template("predict.html", drg_definition=drg_definition, provider_name=provider_name, hrr_description=hrr_description, Ypredict=Ypredict)
@@ -114,18 +117,28 @@ def allhrr_data():
 @app.route("/hrr/<drg>")
 def hrrwithdrg_data(drg):
     r""" Returns a json of the hrr data"""
-    print("hrrwithdrg_data:") 
-    #response = db.session.query(Inpatient).filter_by(drg_definition = drg)
-    response = db.session.query.join(Inpatient, Hrr.hrr_description==Inpatient.hrr_description).filter_by(drg_definition = drg).distinct(Hrr.hrr_description)
+    print("hrrwithdrg_data:")
+    print(drg)
+    sql = text ('select distinct i.hrr_description, h.hrr_id \
+			     from   inpatient i \
+			     join   hrr  h  \
+				    on  i.hrr_description = h.hrr_description  \
+			     where  i.drg_definition = :drg \
+			     order by i.hrr_description ')
+						  
+    print (sql)
+    response = db.engine.execute(sql, {'drg': drg}).fetchall()
+    #print (response)
+ 	
 	
-	#userList = users.query.join(friendships, users.id==friendships.user_id).add_columns(users.userId, users.name, users.email, friends.userId, friendId).filter(users.id == friendships.friend_id).filter(frien
-				
-    d_list = []
+    hrr_list = []
     for r in response:
-        rec = r.__dict__.copy()
-        del rec['_sa_instance_state']
-        d_list.append(rec)
-    return jsonify(d_list)	
+        d_dictionary = {}
+        d_dictionary['hrr_description'] = r[0]
+        d_dictionary['hrr_id'] = r[1]
+        hrr_list.append(d_dictionary)
+    return jsonify(hrr_list)	
+	
 @app.route("/drg_all")
 def alldrg_data():
     r""" Returns a json of the drg data"""
@@ -161,6 +174,38 @@ def providerinhrr_data(hrr):
         del rec['_sa_instance_state']
         d_list.append(rec)
     return jsonify(d_list)
+
+@app.route("/hrrprovider/<drghrr>")
+def providerindrghrr_data(drghrr):
+    r""" Returns a json of the inpatient data"""
+
+    print("provider with in region that had perform the procedure:")
+    print(drghrr)
+    drg_hrr = drghrr.split("|")
+    drg = drg_hrr[0]
+    hrr = drg_hrr[1]
+    print (drg)
+    print (hrr)
+    sql = text ('select distinct p.provider_rowid, p.provider_name \
+			     from   inpatient i \
+                 join   provider  p \
+                    on  i.provider_id = p.provider_id \
+			     where  i.drg_definition = :drg \
+                 and    i.hrr_description = :hrr \
+			     order by p.provider_name ')
+						  
+    print (sql)
+    response = db.engine.execute(sql, {'drg': drg, 'hrr': hrr}).fetchall()
+    #print (response)
+	
+    provider_list = []
+    for r in response:
+        d_dictionary = {}
+        d_dictionary['provider_rowid'] = r[0]
+        d_dictionary['provider_name'] = r[1]
+        provider_list.append(d_dictionary)
+    return jsonify(provider_list)	
+	
 	
 @app.route("/drg119")
 def drg119():
