@@ -33,7 +33,7 @@ d3.json(pUrl, function(data) {
             layer.bindPopup(feature.properties.HRRCITY);
         },
         style: {
-            color: "#fdae61",
+            color: "#18bc9c",
             weight: 2,
             fillOpacity: 0
         }
