@@ -83,7 +83,7 @@ def predict():
 
 @app.route("/question")
 def question():
-    return render_template("question")
+    return render_template("question.html")
 
 @app.route("/data")
 def data():

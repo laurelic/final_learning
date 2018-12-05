@@ -2,4 +2,47 @@
 
 {% block content %}
 
+<style>
+    #fig_el4920827772667477686684476176 {
+        display:none;
+    }
+</style>
+
+<div class="container-fluid mt-7 data-body">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h3>What do people typically get charged?</h5>
+        </div> 
+    </div>
+    <div class="row">
+        <div class="col-12">
+            Find the Top 10 frequently recorded procedures in the menu below. Visualizations of the average Medicare charge vs average number of procedures per provider within each Hospital Referral Region can be accessed below.
+        </div>
+    </div>
+        <div class="col-md-10"></div>
+            <select class="custom-select" id="procedures" name="procedures">
+                <option value="" selected>Select procedure...</option>
+                <option value="1">Question One</option>
+                <option value="2">Question Two</option>
+                <option value="3">Question Three</option>
+                <option value="4">Question Four</option>
+                <option value="5">Question Five</option>
+                <option value="6">Question Six</option> 
+            </select>
+
+    <div id="fig_el4920827772667477686684476176"></div>
+
+<script type="text/javascript" src="{{  url_for('static', filename='js/test.js')}}"></script>
+</div>
+
+<script>
+
+    var elem = document.getElementById("procedures");
+    elem.onchange = function(){
+        var hiddenDiv = document.getElementById("fig_el4920827772667477686684476176");
+        hiddenDiv.style.display = (this.value === "1") ? "none":"block";
+    };
+ 
+    </script>
+
 {% endblock %}
