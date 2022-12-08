@@ -5,7 +5,7 @@ numpy==1.14.3
 SQLAlchemy==1.2.10
 pandas==0.23.0
 scikit_learn==0.20.1
-certifi==2018.10.15
+certifi==2022.12.7
 
 chardet==3.0.4
 
